@@ -2,6 +2,8 @@
 
 **原始镜像：nvidia/pytorch:24.02-py3**
 
+在config文件夹中填写配置
+
 生成DockerFile文件
 ```bash
 python generate_dockerfile.py

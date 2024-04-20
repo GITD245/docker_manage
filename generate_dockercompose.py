@@ -13,18 +13,18 @@ def generate_random_string(length):
     return random_string
 
 
-def make_yaml_data(args,config):
+def make_yaml_data(args, config):
     yaml_data = {
-        'image': config['DOCKERCOMPOSE']['IMAGE'],
-        'ipc':'host',
+        'image': config['DOCKERCOMPOSE']['DOCKERFILE_IMAGE'],
+        'ipc': 'host',
         'container_name': args.user,
         'hostname': f'docker-{args.user}',
         'volumes': [f'/docker/{args.user}/workspace:/workspace', f'/docker/{args.user}/home:/home', f'/docker/data:/data'],
         'ports': [f'{args.port}:22'],
         'command': f"/bin/bash -c \"service ssh restart && echo 'root:{args.passwd}' | chpasswd && /bin/bash\"",
         'tty': True,
-        'ulimits':{
-            'memlock':{
+        'ulimits': {
+            'memlock': {
                 'soft': -1,
                 'hard': -1
             }
@@ -93,7 +93,7 @@ def main():
         else:
             args.port = config['DOCKERCOMPOSE']['START_PROT']
 
-    new_yaml_data = make_yaml_data(args,config)
+    new_yaml_data = make_yaml_data(args, config)
 
     docker_compose_file = write_DockerComposefile(
         docker_compose_file, new_yaml_data, args)
@@ -104,6 +104,7 @@ def main():
     print('1. 数据集数据放到 /data 目录下，实验代码相关数据放到 /home 或 /workspace 这几个目录设置了数据持久化，如果容器出问题重置了，这些目录下的文件会保留，其他的目录下的文件大概率会丢失。')
     print('2. 定期备份数据与代码!!定期备份数据与代码!!定期备份数据与代码!!Linux 环境下数据丢失极难找回，且删除没有确认。')
     print('3. 尽量不要用完所有的显卡，以免其他人无法使用。如遇到时间紧张需要用卡的情况请联系设备管理员协调。')
+
 
 if __name__ == '__main__':
     main()
