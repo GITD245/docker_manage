@@ -17,6 +17,7 @@ def make_yaml_data(args, config):
     yaml_data = {
         'image': config['DOCKERCOMPOSE']['DOCKERFILE_IMAGE'],
         'ipc': 'host',
+        'working_dir': '/workspace',
         'container_name': args.user,
         'hostname': f'docker-{args.user}',
         'volumes': [f'/docker/{args.user}/workspace:/workspace', f'/docker/{args.user}/home:/home', f'/docker/data:/data'],
@@ -91,7 +92,7 @@ def main():
                 ssh_port_list.append(ssh_port)
             args.port = max(ssh_port_list)+1
         else:
-            args.port = config['DOCKERCOMPOSE']['START_PROT']
+            args.port = config['DOCKERCOMPOSE']['START_PORT']
 
     new_yaml_data = make_yaml_data(args, config)
 
