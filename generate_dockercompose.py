@@ -17,7 +17,6 @@ def make_yaml_data(args, config):
     yaml_data = {
         'image': config['DOCKERCOMPOSE']['DOCKERFILE_IMAGE'],
         'ipc': 'host',
-        'working_dir': '/workspace',
         'container_name': args.user,
         'hostname': f'docker-{args.user}',
         'volumes': [f'/docker/{args.user}/workspace:/workspace', f'/docker/{args.user}/home:/home', f'/docker/data:/data'],
@@ -100,9 +99,10 @@ def main():
         docker_compose_file, new_yaml_data, args)
 
     print(
-        f"\ndocker name:{args.user}\n\nroot password:{args.passwd}\n\nssh:\nssh -p {args.port} root@{config['DOCKERCOMPOSE']['IP']}\n\nssh config example:\nHost {config['DOCKERCOMPOSE']['HOSTNAME']}\nHostName {config['DOCKERCOMPOSE']['IP']}\nUser root\nPort {args.port}\nProxyJump {config['DOCKERCOMPOSE']['PROXYJUMP']}\n")
+        f"\ndocker name:\n{args.user}\n\nroot password:\n{args.passwd}\n\nssh:\nssh -p {args.port} root@{config['DOCKERCOMPOSE']['IP']}\n\nssh config example:\nHost {config['DOCKERCOMPOSE']['HOSTNAME']}\nHostName {config['DOCKERCOMPOSE']['IP']}\nUser root\nPort {args.port}\nProxyJump {config['DOCKERCOMPOSE']['PROXYJUMP']}\n")
     print('注意事项：')
-    print('1. 数据集数据放到 /data 目录下，实验代码相关数据放到 /home 或 /workspace 这几个目录设置了数据持久化，如果容器出问题重置了，这些目录下的文件会保留，其他的目录下的文件大概率会丢失。')
+    print('1. 数据集数据放到 /data 目录下，实验代码相关数据放到 /home 或 /workspace; 这几个目录设置了数据持久化，如果容器出问题重置了，这些目录下的文件会保留，其他的目录下的文件大概率会丢失。')
+    print('#### /root 目录未设置数据持久化!!! ####')
     print('2. 定期备份数据与代码!!定期备份数据与代码!!定期备份数据与代码!!Linux 环境下数据丢失极难找回，且删除没有确认。')
     print('3. 尽量不要用完所有的显卡，以免其他人无法使用。如遇到时间紧张需要用卡的情况请联系设备管理员协调。')
 
