@@ -38,3 +38,10 @@ docker compose create
 ```bash
 docker compose start
 ```
+
+建议配置：更改/etc/docker/daemon.json 添加用户隔离
+```yaml
+{
+  "userns-remap": "default"
+}
+```
