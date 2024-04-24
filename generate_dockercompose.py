@@ -22,6 +22,7 @@ def make_yaml_data(args, config):
         'volumes': [f'/docker/{args.user}/workspace:/workspace', f'/docker/{args.user}/home:/home', f'/docker/data:/data'],
         'ports': [f'{args.port}:22'],
         'command': f"/bin/bash -c \"service ssh restart && echo 'root:{args.passwd}' | chpasswd && /bin/bash\"",
+        'restart': 'unless-stopped',
         'tty': True,
         'ulimits': {
             'memlock': {
