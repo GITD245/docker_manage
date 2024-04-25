@@ -38,10 +38,4 @@ docker compose create
 ```bash
 docker compose start
 ```
-
-建议配置：更改/etc/docker/daemon.json 添加用户隔离
-```yaml
-{
-  "userns-remap": "default"
-}
-```
+**建议直接使用docker内root用户，在docker内新建用户会因为容器与宿主机使用同一usernamespace而导致用户映射出问题**
