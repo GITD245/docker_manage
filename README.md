@@ -11,9 +11,9 @@ git clone https://github.com/GITD245/docker_manage.git
 [DOCKERFILE]
 IMAGE = nvcr.io/nvidia/pytorch:24.03-py3 ;原始镜像
 [DOCKERCOMPOSE]
-DOCKERFILE_IMAGE = ngc:24.02 ;通过dockerfile创建的镜像名
-IP = 127.0.0.1 ;宿主机IP
-HOSTNAME = hostname ;宿主机hostname 用于生成ssh config
+DOCKERFILE_IMAGE = ngc:24.03 ;通过dockerfile创建的镜像名
+IP = 127.0.0.1 ;宿主机IP 用于生成ssh连接命令
+HOSTNAME = hostname ;该容器的hostname 用于生成ssh config
 PROXYJUMP = proxyjump ;跳板机 用于生成ssh config
 START_PORT = 40000 ;第一个用户的ssh映射端口
 ```
@@ -24,7 +24,7 @@ python generate_dockerfile.py
 ```
 使用DockerFile文件创建镜像
 ```bash
-docker build -t ngc:24.02 .
+docker build -t ngc:24.03 .
 ```
 生成compose.yaml文件 需指定用户名 运行后会容器输出连接容器的相关命令及注意事项
 ```bash
