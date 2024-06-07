@@ -28,7 +28,7 @@ docker build -t ngc:24.03 .
 ```
 生成compose.yaml文件 需指定用户名 运行后会容器输出连接容器的相关命令及注意事项
 ```bash
-python generate_dockercompose.py --user username
+python generate_dockercompose.py --user username #可使用--network指定网络模式 --delete删除用户
 ```
 创建容器
 ```bash
