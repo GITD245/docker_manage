@@ -1,6 +1,6 @@
 ### Docker集群管理
 
-**原始镜像：nvidia/pytorch:24.02-py3**
+**原始镜像：nvidia/pytorch:24.03-py3**
 
 ```bash
 git clone https://github.com/GITD245/docker_manage.git
