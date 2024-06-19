@@ -55,6 +55,7 @@ def read_DockerComposefile():
     if not os.path.isfile('compose.yaml'):
         with open('compose.yaml', 'w') as file:
             print('没有compose.yaml文件, 自动创建compose.yaml')
+            yaml.safe_dump({'services': {}}, file)
 
     with open('compose.yaml', 'r') as file:
         yaml_data = yaml.safe_load(file)
@@ -131,7 +132,7 @@ def main():
     print('3. 尽量不要用完所有的显卡，以免其他人无法使用。如遇到时间紧张需要用卡的情况请联系设备管理员协调。')
     print('4. 尽量直接使用root用户运行。新建用户也不要超过一个。')
     print(f"5. 正在使用{args.network}网络模式")
-    print(f"6. 正在使用的镜像{config['DOCKERCOMPOSE']['DOCKERFILE_IMAGE']}")
+    print(f"6. 正在使用的镜像: {config['DOCKERCOMPOSE']['DOCKERFILE_IMAGE']}")
 
 
 if __name__ == '__main__':
