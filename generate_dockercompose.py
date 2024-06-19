@@ -5,6 +5,7 @@ import yaml
 import os
 import sys
 import configparser
+import subprocess
 from copy import deepcopy
 
 
@@ -133,6 +134,7 @@ def main():
     print('4. 尽量直接使用root用户运行。新建用户也不要超过一个。')
     print(f"5. 正在使用{args.network}网络模式")
     print(f"6. 正在使用的镜像: {config['DOCKERCOMPOSE']['DOCKERFILE_IMAGE']}")
+    subprocess.run("cp compose.yaml compose.yaml.backup", shell=True, capture_output=True, text=True)
 
 
 if __name__ == '__main__':
