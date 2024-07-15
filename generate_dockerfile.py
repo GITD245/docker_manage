@@ -4,8 +4,6 @@ import string
 import configparser
 
 
-
-
 def generate_random_string(length):
     """生成一个指定长度的随机字符串，包含大写字母、小写字母和数字。"""
     characters = string.ascii_letters + string.digits
@@ -13,9 +11,9 @@ def generate_random_string(length):
     return random_string
 
 
-def make_DockerFile(args,config):
+def make_DockerFile(args, config):
     # 基础配置
-    command = f"FROM {config['DOCKERFILE']['IMAGE']}\nRUN mkdir /data\nRUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list\nRUN apt update\nRUN apt-get install -y --no-install-recommends openssh-server sudo iproute2\nRUN mkdir /var/run/sshd\nRUN chmod 0755 /var/run/sshd\nRUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config\nRUN sed -i 's#PATH=.*#PATH=\"/usr/local/nvm/versions/node/v16.20.2/bin:/usr/local/lib/python3.10/dist-packages/torch_tensorrt/bin:/usr/local/mpi/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/ucx/bin:/opt/tensorrt/bin:/snap/bin\"#g' /etc/environment\nRUN sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/' /root/.bashrc\nEXPOSE 22\n\n"
+    command = f"FROM {config['DOCKERFILE']['IMAGE']}\nRUN mkdir /data\nRUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list\nRUN apt update\nRUN apt-get install -y --no-install-recommends openssh-server build-essential tmux net-tools sudo iproute2\nRUN mkdir /var/run/sshd\nRUN chmod 0755 /var/run/sshd\nRUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config\nRUN sed -i 's#PATH=.*#PATH=\"/usr/local/nvm/versions/node/v16.20.2/bin:/usr/local/lib/python3.10/dist-packages/torch_tensorrt/bin:/usr/local/mpi/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/ucx/bin:/opt/tensorrt/bin:/snap/bin\"#g' /etc/environment\nRUN sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/' /root/.bashrc\nEXPOSE 22\n\n"
 
     if args.user is not None:
         # 生成用户 更改密码 加入sudo组
@@ -43,7 +41,7 @@ def main():
         args.passwd = generate_random_string(14)
         print(f'the root passwd is {args.passwd}')
 
-    make_DockerFile(args,config)
+    make_DockerFile(args, config)
 
 
 if __name__ == '__main__':
