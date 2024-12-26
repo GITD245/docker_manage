@@ -47,6 +47,8 @@ def make_yaml_data(args, config):
     }
     if args.network=='bridge':
         yaml_data['ports']=[f'{args.port}:22']
+        if args.localproxy:
+            yaml_data['environment']=[f'HTTP_PROXY=http://localhost:7890',f'HTTPS_PROXY=http://localhost:7890']
     elif args.network=='host':
         yaml_data['command']=f"/bin/bash -c \"service ssh restart && sed -i 's/#Port 22/Port {args.port}/' /etc/ssh/sshd_config && service ssh restart && echo 'root:{args.passwd}' | chpasswd && /bin/bash\""
     return yaml_data
@@ -84,6 +86,7 @@ def main():
     parser.add_argument('--port', type=int, default=None, help="ssh port")
     parser.add_argument('--network', type=str, choices=['host','bridge'],default='bridge',help="network mode")
     parser.add_argument('--delete', action='store_true', help="delete user")
+    parser.add_argument('--localproxy', action='store_true', help="using localhost 7890 as http proxy")
     parser.add_argument('--gpus', type=str, default='all', choices=[
                         '1', '2', '3', '4', '5', '6', '7', 'all'], help="Number of GPUs used")
     args = parser.parse_args()
