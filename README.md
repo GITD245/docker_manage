@@ -22,6 +22,14 @@ START_PORT = 40000 ;第一个用户的ssh映射端口
 ```bash
 python generate_dockerfile.py
 ```
+注册nvcr.io账号并获取API
+https://org.ngc.nvidia.com/setup/api-key
+
+登陆NGC nvcr.io
+```bash
+docker login nvcr.io
+```
+
 使用DockerFile文件创建镜像
 ```bash
 docker build -t ngc:24.03 .
