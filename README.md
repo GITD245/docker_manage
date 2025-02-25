@@ -12,15 +12,17 @@ git clone https://github.com/GITD245/docker_manage.git
 IMAGE = nvcr.io/nvidia/pytorch:24.03-py3 ;原始镜像
 [DOCKERCOMPOSE]
 DOCKERFILE_IMAGE = ngc:24.03 ;通过dockerfile创建的镜像名
-IP = 127.0.0.1 ;宿主机IP 用于生成ssh连接命令
-HOSTNAME = hostname ;该容器的hostname 用于生成ssh config
-PROXYJUMP = proxyjump ;跳板机 用于生成ssh config
+HOST = name ;该容器的host 填写于ssh config Host
+HOSTNAME = 127.0.0.1 ;宿主机IP 填写于ssh config HostName
+PROXYJUMP = proxyjump ;跳板机 填写于ssh config ProxyJump
 START_PORT = 40000 ;第一个用户的ssh映射端口
+[PROXY]
+PROXY = localhost ;代理地址 用于--localproxy选项
 ```
 
 生成DockerFile文件
 ```bash
-python generate_dockerfile.py
+python make_dockerfile.py
 ```
 注册nvcr.io账号并获取API
 https://org.ngc.nvidia.com/setup/api-key

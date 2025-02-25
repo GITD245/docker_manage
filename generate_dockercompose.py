@@ -48,7 +48,7 @@ def make_yaml_data(args, config):
     if args.network=='bridge':
         yaml_data['ports']=[f'{args.port}:22']
         if args.localproxy:
-            yaml_data['environment']=[f'HTTP_PROXY=http://localhost:7890',f'HTTPS_PROXY=http://localhost:7890']
+            yaml_data['environment']=[f"HTTP_PROXY=http://{config['PROXY']['PROXY']}:7890",f"HTTPS_PROXY=http://{config['PROXY']['PROXY']}:7890"]
     elif args.network=='host':
         yaml_data['command']=f"/bin/bash -c \"service ssh restart && sed -i 's/#Port 22/Port {args.port}/' /etc/ssh/sshd_config && service ssh restart && echo 'root:{args.passwd}' | chpasswd && /bin/bash\""
     return yaml_data
@@ -128,15 +128,19 @@ def main():
         docker_compose_file, new_yaml_data, args)
 
     print(
-        f"\ndocker name:\n{args.user}\n\nroot password:\n{args.passwd}\n\nssh:\nssh -p {args.port} root@{config['DOCKERCOMPOSE']['IP']}\n\nssh config example:\nHost {config['DOCKERCOMPOSE']['HOSTNAME']}\nHostName {config['DOCKERCOMPOSE']['IP']}\nUser root\nPort {args.port}\nProxyJump {config['DOCKERCOMPOSE']['PROXYJUMP']}\n")
+        f"\ndocker name:\n{args.user}\n\nroot password:\n{args.passwd}\n\nssh:\nssh -p {args.port} root@{config['DOCKERCOMPOSE']['HOSTNAME']}\n\nssh config example:\nHost {config['DOCKERCOMPOSE']['HOST']}\nHostName {config['DOCKERCOMPOSE']['HOSTNAME']}\nUser root\nPort {args.port}\nProxyJump {config['DOCKERCOMPOSE']['PROXYJUMP']}\n")
     print('注意事项：')
-    print('1. 数据集数据放到 /data 目录下，实验代码相关数据放到 /home 或 /workspace; 这几个目录设置了数据持久化，如果容器出问题重置了，这些目录下的文件会保留，其他的目录下的文件大概率会丢失。')
+    print('1. 数据集数据放到 /data 目录下，实验代码相关数据放到 /workspace; 这几个目录设置了数据持久化，如果容器出问题重置了，这些目录下的文件会保留，其他的目录下的文件会丢失。')
+    print('#### /root 目录未设置数据持久化!!! ####')
+    print('#### /root 目录未设置数据持久化!!! ####')
     print('#### /root 目录未设置数据持久化!!! ####')
     print('2. 定期备份数据与代码!!定期备份数据与代码!!定期备份数据与代码!!Linux 环境下数据丢失极难找回，且删除没有确认。')
     print('3. 尽量不要用完所有的显卡，以免其他人无法使用。如遇到时间紧张需要用卡的情况请联系设备管理员协调。')
-    print('4. 尽量直接使用root用户运行。新建用户也不要超过一个。')
+    print('4. 直接使用root用户运行。不要新建用户。')
     print(f"5. 正在使用{args.network}网络模式")
     print(f"6. 正在使用的镜像: {config['DOCKERCOMPOSE']['DOCKERFILE_IMAGE']}")
+    if args.localproxy:
+        print(f"7. 正在使用本地代理: http://{config['PROXY']['PROXY']}:7890")
     subprocess.run("cp compose.yaml compose.yaml.backup", shell=True, capture_output=True, text=True)
 
 
